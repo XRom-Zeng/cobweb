@@ -1,0 +1,9 @@
+server:
+  port: 812
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://zxr1998.com.cn/cobweb?characterEncoding=UTF-8&useSSL=false
+    username: XRom
+    password: XRom45
+
