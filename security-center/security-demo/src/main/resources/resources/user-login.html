@@ -5,10 +5,27 @@
     <title>Security Login</title>
 </head>
 <body>
-    <form action="/security/browser/login" method="post">
-        <input type="text" name="username"> <br/>
-        <input type="password" name="password"> <br/>
-        <button type="submit">Login</button>
-    </form>
+<form action="/security/browser/login" method="post">
+    <table>
+        <tr>
+            <td>用户名：</td>
+            <td><input type="text" name="username"></td>
+        </tr>
+        <tr>
+            <td>密码：</td>
+            <td><input type="password" name="password"></td>
+        </tr>
+        <tr>
+            <td>验证码：</td>
+            <td>
+                <input type="text" name="validCode">
+                <img src="/security/core/code/image">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit">Login</button></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>
