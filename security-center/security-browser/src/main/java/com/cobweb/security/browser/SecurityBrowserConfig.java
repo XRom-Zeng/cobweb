@@ -34,10 +34,11 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         validateCodeFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        validateCodeFilter.setSecurityProperties(securityProperties);
+        validateCodeFilter.afterPropertiesSet();
 
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-//                .loginPage("/security/browser/loginPage")
                 .loginPage(securityProperties.getBrowser().getLoginPage())
                 .loginProcessingUrl("/security/browser/login")
                 .successHandler(authenticationSuccessHandler)
@@ -46,7 +47,6 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         securityProperties.getBrowser().getLoginPage(),
-//                        "/security/browser/loginPage",
                         "/error",
                         "/security/core/code/image"
                 ).permitAll()
