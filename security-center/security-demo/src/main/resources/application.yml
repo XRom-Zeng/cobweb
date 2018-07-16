@@ -10,9 +10,10 @@ cobweb:
   security:
     browser:
       loginPage: /user-login.html
+      remember-me-seconds: 600
+      login-type: json
     code:
       image:
         width: 60
         height: 20
-#      loginType: REDIRECT
 
