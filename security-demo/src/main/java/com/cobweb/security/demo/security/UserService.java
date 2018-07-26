@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService, SocialUserDetailsService
         if (userInfo == null) {
             throw new UsernameNotFoundException("该用户不存在");
         }
-        return new SocialUser("XRom", "XRom",true, true, true, true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new SocialUser(userInfo.getLoginName(), userInfo.getLoginPwd(),true, true, true, true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 
 }
