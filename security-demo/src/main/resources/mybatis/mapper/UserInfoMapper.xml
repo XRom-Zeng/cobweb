@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cobweb.security.demo.mapper.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cobweb.security.demo.entity.UserInfo">
+    <id column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="login_pwd" jdbcType="VARCHAR" property="loginPwd" />
+    <result column="user_state" jdbcType="INTEGER" property="userState" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="user_sex" jdbcType="INTEGER" property="userSex" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, user_name, login_name, login_pwd, user_state, user_type, user_sex, head_url, 
+    created_time, last_login_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_info
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <insert id="insertSelective" parameterType="com.cobweb.security.demo.entity.UserInfo" useGeneratedKeys="true" keyProperty="userId">
+    <selectKey keyProperty="userId" order="BEFORE" resultType="java.lang.String">
+      select UUID() FROM DUAL
+    </selectKey>
+    insert into user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="loginPwd != null">
+        login_pwd,
+      </if>
+      <if test="userState != null">
+        user_state,
+      </if>
+      <if test="userType != null">
+        user_type,
+      </if>
+      <if test="userSex != null">
+        user_sex,
+      </if>
+      <if test="headUrl != null">
+        head_url,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null">
+        #{loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null">
+        #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="userSex != null">
+        #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="headUrl != null">
+        #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cobweb.security.demo.entity.UserInfo">
+    update user_info
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null">
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPwd != null">
+        login_pwd = #{loginPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userState != null">
+        user_state = #{userState,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="userSex != null">
+        user_sex = #{userSex,jdbcType=INTEGER},
+      </if>
+      <if test="headUrl != null">
+        head_url = #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 根据登录名查找用户 -->
+  <select id="selectByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_info
+    where login_name = #{loginName,jdbcType=VARCHAR}
+  </select>
+</mapper>

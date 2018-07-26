@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -35,6 +36,9 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService UserDetailsService;
+
+    @Autowired
+    private SpringSocialConfigurer cobwebSocialConfigurer;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -62,20 +66,22 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
                     .successHandler(authenticationSuccessHandler)
                     .failureHandler(authenticationFailureHandler)
                     .and()
+                .apply(cobwebSocialConfigurer)
+                    .and()
                 .rememberMe()
                     .tokenRepository(persistentTokenRepository())
                     .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                     .userDetailsService(UserDetailsService)
-                .and()
+                    .and()
                 .authorizeRequests()
-                .antMatchers(
+                    .antMatchers(
                         securityProperties.getBrowser().getLoginPage(),
                         "/error",
                         "/security/core/code/image"
-                ).permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                        ).permitAll()
+                    .anyRequest()
+                    .authenticated()
+                    .and()
                 .csrf().disable();
     }
 }

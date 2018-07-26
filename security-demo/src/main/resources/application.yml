@@ -1,0 +1,37 @@
+server:
+  port: 812
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://zxr1998.com.cn/cobweb?characterEncoding=UTF-8&useSSL=false
+    username: XRom
+    password: XRom45
+  session:
+    store-type: none
+  redis:
+    host: zxr1998.com.cn
+    password: XRom19980126.
+  resources:
+    add-mappings: false
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+mybatis:
+  type-aliases-package: com.cobweb.security.demo.eneity
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/config/mybatis-config.xml
+cobweb:
+  security:
+    browser:
+      loginPage: /home/login
+      remember-me-seconds: 600
+      login-type: json
+    code:
+      image:
+        width: 60
+        height: 20
+    social:
+      qq:
+        app-id: 101492142
+        app-secret: 4d82d10cfeabdf3e9f116a0b0393d168
