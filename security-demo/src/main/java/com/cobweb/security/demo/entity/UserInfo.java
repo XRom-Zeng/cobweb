@@ -43,11 +43,11 @@ public class UserInfo implements Serializable {
     }
 
     public String getLoginName() {
-        return loginName == null ? "XRom812" : loginName;
+        return loginName == null ? "第三方用户" : loginName;
     }
 
     public void setLoginName(String loginName) {
-        this.loginName = loginName == null ? "XRom812" : loginName.trim();
+        this.loginName = loginName.trim();
     }
 
     public String getLoginPwd() {

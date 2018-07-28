@@ -35,7 +35,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator{
 
         Random random = new Random();
         // 画上一些随机线条
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 30; i++) {
             int x = random.nextInt(width);
             int y = random.nextInt(height);
             int x1 = random.nextInt(12);
