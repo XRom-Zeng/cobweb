@@ -43,7 +43,7 @@ public class QQAutoConfig extends SocialConfigurerAdapter {
     @Autowired(required = false)
     private ConnectionSignUp connectionSignUp;
 
-    private static class SecurityContextUserIdSource implements UserIdSource {
+    private class SecurityContextUserIdSource implements UserIdSource {
         private SecurityContextUserIdSource() {
         }
 

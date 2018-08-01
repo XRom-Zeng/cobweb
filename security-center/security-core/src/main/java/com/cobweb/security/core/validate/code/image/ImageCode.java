@@ -1,26 +1,27 @@
-package com.cobweb.security.core.validate.code;
+package com.cobweb.security.core.validate.code.image;
 
-import lombok.Data;
+import com.cobweb.security.core.validate.code.ValidateCode;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
 
 /**
+ * 图片验证码
  * @author: XRom
  * @createdTime: 2018-07-13 19:11:40
- * 图片验证码
  */
-@Data
-public class ImageCode {
+public class ImageCode extends ValidateCode {
 
     /* 图片流 */
     private BufferedImage image;
 
-    /* 验证码 */
-    private String code;
+    public BufferedImage getImage() {
+        return image;
+    }
 
-    /* 验证码过期时间 */
-    private LocalDateTime expireTime;
+    public void setImage(BufferedImage image) {
+        this.image = image;
+    }
 
     /**
      * 构造方法
@@ -29,15 +30,18 @@ public class ImageCode {
      * @param expireIn  验证码有效时间（单位：秒）
      */
     public ImageCode(BufferedImage image, String code, int expireIn) {
+        super(code, expireIn);
         this.image = image;
-        this.code = code;
-        this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
 
+    /**
+     * 构造方法
+     * @param code 验证码
+     * @param expireTime 具体过期时间
+     */
     public ImageCode(BufferedImage image, String code, LocalDateTime expireTime) {
+        super(code, expireTime);
         this.image = image;
-        this.code = code;
-        this.expireTime = expireTime;
     }
 
     /**
@@ -45,6 +49,6 @@ public class ImageCode {
      * @return
      */
     public boolean isExpire() {
-        return LocalDateTime.now().isAfter(expireTime);
+        return LocalDateTime.now().isAfter(super.getExpireTime());
     }
 }

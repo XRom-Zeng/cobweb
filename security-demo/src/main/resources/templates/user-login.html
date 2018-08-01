@@ -5,7 +5,7 @@
     <title>Security Login</title>
 </head>
 <body>
-<form action="/security/browser/login" method="post">
+<form action="/security/authentication/form" method="post">
     <table>
         <tr>
             <td>用户名：</td>
@@ -19,7 +19,7 @@
             <td>验证码：</td>
             <td>
                 <input type="text" name="validCode">
-                <img src="/security/core/code/image" onclick="this.src='/security/core/code/image'">
+                <img src="/security/code/image" onclick="this.src='/security/code/image'">
             </td>
         </tr>
         <tr>
@@ -28,10 +28,31 @@
         <tr>
             <td colspan="2"><button type="submit">Login</button></td>
         </tr>
+    </table>
+</form>
+<br/><br/>
+<form action="/security/authentication/mobile" method="post">
+    <table>
         <tr>
-            <td colspan="2"><a href="/auth/qq">QQ登录</a></td>
+            <td>手机号：</td>
+            <td><input type="text" name="mobile"></td>
+        </tr>
+        <tr>
+            <td>验证码：</td>
+            <td>
+                <input type="text" name="validCode">
+                <a href="/security/code/sms?mobile=18381005946">发送短信验证码</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="checkbox" value="true" name="remember-me">记住我</td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit">Login</button></td>
         </tr>
     </table>
 </form>
+<br/><br/>
+<a href="/auth/qq">QQ登录</a>
 </body>
 </html>

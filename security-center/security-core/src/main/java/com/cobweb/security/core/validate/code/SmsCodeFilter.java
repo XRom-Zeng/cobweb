@@ -1,7 +1,6 @@
 package com.cobweb.security.core.validate.code;
 
 import com.cobweb.security.core.properties.SecurityProperties;
-import com.cobweb.security.core.validate.code.image.ImageCode;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,7 +27,7 @@ import java.util.Set;
  * 图形验证码过滤器
  */
 @Data
-public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
+public class SmsCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
@@ -43,13 +42,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
-        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrls(), ",");
+        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getSms().getUrls(), ",");
         if (configUrls != null && configUrls.length > 0) {
             for (String configUrl : configUrls) {
                 urls.add(configUrl);
             }
         }
-        urls.add("/security/authentication/form");    //用户名密码登录
+        urls.add("/security/authentication/mobile");    //手机号登录
     }
 
     @Override
@@ -78,7 +77,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
      * @throws ServletRequestBindingException
      */
     private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, ValidateCodeProcessor.SESSION_KET_PREFIX + "image");
+        ValidateCode codeInSession = (ValidateCode) sessionStrategy.getAttribute(request, ValidateCodeProcessor.SESSION_KET_PREFIX + "sms");
         String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "validCode");
         if (StringUtils.isBlank(codeInRequest)) {
             throw new ValidateCodeException("验证码不能为空");
@@ -87,12 +86,12 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
             throw new ValidateCodeException("验证码不存在");
         }
         if (codeInSession.isExpire()) {
-            sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KET_PREFIX + "image");
+            sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KET_PREFIX + "sms");
             throw new ValidateCodeException("验证码已经过期");
         }
         if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
             throw new ValidateCodeException("验证码输入错误");
         }
-        sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KET_PREFIX + "image");
+        sessionStrategy.removeAttribute(request, ValidateCodeProcessor.SESSION_KET_PREFIX + "sms");
     }
 }

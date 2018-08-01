@@ -2,7 +2,9 @@ package com.cobweb.security.browser;
 
 import com.cobweb.security.browser.authentication.BrowserAuthenticationFailureHandler;
 import com.cobweb.security.browser.authentication.BrowserAuthenticationSuccessHandler;
+import com.cobweb.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.cobweb.security.core.properties.SecurityProperties;
+import com.cobweb.security.core.validate.code.SmsCodeFilter;
 import com.cobweb.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,6 +42,9 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SpringSocialConfigurer cobwebSocialConfigurer;
 
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -59,14 +64,23 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
         validateCodeFilter.setSecurityProperties(securityProperties);
         validateCodeFilter.afterPropertiesSet();
 
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+        smsCodeFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        smsCodeFilter.setSecurityProperties(securityProperties);
+        smsCodeFilter.afterPropertiesSet();
+
+        http
+                .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(cobwebSocialConfigurer)
+                .and()
+                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
                     .loginPage(securityProperties.getBrowser().getLoginPage())
-                    .loginProcessingUrl("/security/browser/login")
+                    .loginProcessingUrl("/security/authentication/form")
                     .successHandler(authenticationSuccessHandler)
                     .failureHandler(authenticationFailureHandler)
-                    .and()
-                .apply(cobwebSocialConfigurer)
                     .and()
                 .rememberMe()
                     .tokenRepository(persistentTokenRepository())
@@ -77,7 +91,8 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(
                         securityProperties.getBrowser().getLoginPage(),
                         "/error",
-                        "/security/core/code/image"
+                        "/security/code/image", //获取短信验证码接口
+                        "/security/code/sms"    //获取短信验证码接口
                         ).permitAll()
                     .anyRequest()
                     .authenticated()

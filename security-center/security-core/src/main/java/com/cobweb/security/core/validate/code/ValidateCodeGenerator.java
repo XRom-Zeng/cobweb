@@ -9,5 +9,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface ValidateCodeGenerator {
 
-    ImageCode generator(HttpServletRequest request);
+    /**
+     * 生成验证码
+     * @param request
+     * @return
+     */
+    ValidateCode generator(HttpServletRequest request);
 }

@@ -1,6 +1,9 @@
 package com.cobweb.security.core.validate.code;
 
 import com.cobweb.security.core.properties.SecurityProperties;
+import com.cobweb.security.core.validate.code.image.ImageCodeGenerator;
+import com.cobweb.security.core.validate.code.sms.DefaultSmsCodeSender;
+import com.cobweb.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -17,10 +20,16 @@ public class ValidateBeanConfig {
     private SecurityProperties securityProperties;
 
     @Bean
-    @ConditionalOnMissingBean(ValidateCodeGenerator.class)
+    @ConditionalOnMissingBean(name = "imageCodeGenerator")
     public ValidateCodeGenerator imageCodeGenerator () {
         ImageCodeGenerator imageCodeGenerator = new ImageCodeGenerator();
         imageCodeGenerator.setSecurityProperties(securityProperties);
         return imageCodeGenerator;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(SmsCodeSender.class)
+    public SmsCodeSender smsCodeSender() {
+        return new DefaultSmsCodeSender();
     }
 }

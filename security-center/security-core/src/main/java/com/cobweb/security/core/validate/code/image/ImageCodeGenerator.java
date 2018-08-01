@@ -1,6 +1,7 @@
-package com.cobweb.security.core.validate.code;
+package com.cobweb.security.core.validate.code.image;
 
 import com.cobweb.security.core.properties.SecurityProperties;
+import com.cobweb.security.core.validate.code.ValidateCodeGenerator;
 import lombok.Data;
 import org.springframework.web.bind.ServletRequestUtils;
 
@@ -14,7 +15,7 @@ import java.util.Random;
  * @createdTime: 2018-07-15 01:08:21
  */
 @Data
-public class ImageCodeGenerator implements ValidateCodeGenerator{
+public class ImageCodeGenerator implements ValidateCodeGenerator {
 
      private SecurityProperties securityProperties;
 

@@ -30,6 +30,10 @@ public class ApiResponse {
         return of(UNDEFINED.getCode(), null, UNDEFINED.getMsg());
     }
 
+    public static ApiResponse error(String msg) {
+        return  of(500, null, msg);
+    }
+
     public static ApiResponse error(ResponseCode responseCode) {
         return of(responseCode.getCode(), null, responseCode.getMsg());
     }
