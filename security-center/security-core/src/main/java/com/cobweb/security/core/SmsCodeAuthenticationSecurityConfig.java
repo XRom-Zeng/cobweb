@@ -1,5 +1,7 @@
-package com.cobweb.security.core.authentication.mobile;
+package com.cobweb.security.core;
 
+import com.cobweb.security.core.authentication.mobile.SmsCodeAuthenticationFilter;
+import com.cobweb.security.core.authentication.mobile.SmsCodeAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

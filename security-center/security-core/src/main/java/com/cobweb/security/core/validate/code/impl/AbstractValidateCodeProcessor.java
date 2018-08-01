@@ -55,7 +55,7 @@ public abstract class AbstractValidateCodeProcessor<C> implements ValidateCodePr
      * @param validateCode 验证码
      */
     private void save(ServletWebRequest request, C validateCode) {
-        sessionStrategy.setAttribute(request, SESSION_KET_PREFIX+getProcessorType(request), validateCode);
+        sessionStrategy.setAttribute(request, SESSION_KET_PREFIX+getProcessorType(request).toUpperCase(), validateCode);
     }
 
     /**

@@ -6,7 +6,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import java.io.IOException;
 
 /**
- * 验证码处理器， 封装不同验证码的处理罗
+ * 验证码处理器， 封装不同验证码的处理逻辑
  * @author: XRom
  * @createdTime: 2018-07-30 15:51:12
  */

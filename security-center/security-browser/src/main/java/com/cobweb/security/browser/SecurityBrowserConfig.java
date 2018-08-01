@@ -2,9 +2,10 @@ package com.cobweb.security.browser;
 
 import com.cobweb.security.browser.authentication.BrowserAuthenticationFailureHandler;
 import com.cobweb.security.browser.authentication.BrowserAuthenticationSuccessHandler;
-import com.cobweb.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.cobweb.security.core.SmsCodeAuthenticationSecurityConfig;
+import com.cobweb.security.core.ValidateCodeSecurityConfig;
+import com.cobweb.security.core.constant.SecurityConstants;
 import com.cobweb.security.core.properties.SecurityProperties;
-import com.cobweb.security.core.validate.code.SmsCodeFilter;
 import com.cobweb.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +44,9 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
     private SpringSocialConfigurer cobwebSocialConfigurer;
 
     @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
+    @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Bean
@@ -59,26 +63,16 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-        validateCodeFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-        validateCodeFilter.setSecurityProperties(securityProperties);
-        validateCodeFilter.afterPropertiesSet();
-
-        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
-        smsCodeFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
-        smsCodeFilter.setSecurityProperties(securityProperties);
-        smsCodeFilter.afterPropertiesSet();
-
         http
-                .apply(smsCodeAuthenticationSecurityConfig)
-                .and()
-                .apply(cobwebSocialConfigurer)
-                .and()
-                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .apply(validateCodeSecurityConfig) //验证码
+                    .and()
+                .apply(smsCodeAuthenticationSecurityConfig) //短信认证
+                    .and()
+                .apply(cobwebSocialConfigurer)  //social
+                    .and()
                 .formLogin()
                     .loginPage(securityProperties.getBrowser().getLoginPage())
-                    .loginProcessingUrl("/security/authentication/form")
+                    .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
                     .successHandler(authenticationSuccessHandler)
                     .failureHandler(authenticationFailureHandler)
                     .and()
@@ -89,11 +83,11 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .authorizeRequests()
                     .antMatchers(
-                        securityProperties.getBrowser().getLoginPage(),
-                        "/error",
-                        "/security/code/image", //获取短信验证码接口
-                        "/security/code/sms"    //获取短信验证码接口
-                        ).permitAll()
+                            securityProperties.getBrowser().getLoginPage(),
+                            "/error",
+                            SecurityConstants.DEFAULT_GET_IMG__CODE_URL, //获取图形验证码接口
+                            SecurityConstants.DEFAULT_GET_SMS__CODE_URL    //获取短信验证码接口
+                    ).permitAll()
                     .anyRequest()
                     .authenticated()
                     .and()
