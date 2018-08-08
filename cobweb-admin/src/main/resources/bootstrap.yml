@@ -1,0 +1,14 @@
+server:
+  port: 8100
+spring:
+  application:
+    name: cobweb-admin
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: config-center
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8120/eureka/

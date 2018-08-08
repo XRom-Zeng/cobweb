@@ -11,6 +11,8 @@
     <modules>
         <module>security-center</module>
         <module>registry-center</module>
+        <module>config-center</module>
+        <module>cobweb-admin</module>
     </modules>
 
     <properties>
@@ -25,12 +27,6 @@
         <spring.cloud.version>Finchley.SR1</spring.cloud.version>
     </properties>
 
-    <!--
-        spring boot V1：
-            spring io:Brussels-SR11
-            spring cloud:Edgware.SR4
-
-    -->
     <dependencyManagement>
         <dependencies>
             <dependency>

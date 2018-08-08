@@ -1,4 +1,4 @@
-package com.cobweb.eureka.server;
+package com.cobweb.server.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,0 +1,17 @@
+server:
+  port: 8121
+spring:
+  application:
+    name: config-center
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/XRom-Zeng/cobweb-config-server
+          username: XRom.Zeng@outlook.com
+          password: XRom19980126.
+          basedir: E:\Projects\XRom\repository\config-server
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8120/eureka/
