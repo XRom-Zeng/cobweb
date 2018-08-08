@@ -7,9 +7,12 @@ spring:
     url: jdbc:mysql://zxr1998.com.cn/cobweb?characterEncoding=UTF-8&useSSL=false
     username: XRom
     password: XRom45
+  session:
+    store-type: redis
   redis:
     host: zxr1998.com.cn
     password: XRom19980126.
+    database: 1
   resources:
     add-mappings: false
   thymeleaf:
@@ -29,7 +32,11 @@ cobweb:
       image:
         width: 60
         height: 20
+      sms:
+        urls: /security/pay/*
     social:
       qq:
-        app-id: 101492142
-        app-secret: 4d82d10cfeabdf3e9f116a0b0393d168
+        app-id: 101494188
+        app-secret: 7aa30095e9f40f66e06d8c1127a6b270
+    session:
+      max-sessions-prevents-login: true

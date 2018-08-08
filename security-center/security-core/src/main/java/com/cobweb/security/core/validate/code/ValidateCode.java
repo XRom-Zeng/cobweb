@@ -2,6 +2,7 @@ package com.cobweb.security.core.validate.code;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  * @createdTime: 2018-07-28 23:40:19
  */
 @Data
-public class ValidateCode {
+public class ValidateCode implements Serializable {
 
     /* 验证码 */
     private String code;

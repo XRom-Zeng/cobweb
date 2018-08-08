@@ -27,5 +27,13 @@ public interface SecurityConstants {
      */
     public final static String DEFAULT_GET_SMS__CODE_URL = "/security/code/sms";
 
+    /**
+     * 默认session失效处理url
+     */
+    public static String DEFAULT_SESSION_INVALID_URL = "/security/browser/"+SecurityConstants.SESSION_INVALID_ULR_SUFFIX;
+
+
+    public static String SESSION_INVALID_ULR_SUFFIX = "session/invalid";
+
 
 }

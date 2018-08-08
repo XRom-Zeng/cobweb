@@ -15,5 +15,6 @@
         <module>security-browser</module>
         <module>security-app</module>
         <module>security-core</module>
+        <module>security-demo</module>
     </modules>
 </project>

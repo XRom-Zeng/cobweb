@@ -1,6 +1,7 @@
 package com.cobweb.security.core.validate.code.impl;
 
 import com.cobweb.security.core.exception.RequestParamException;
+import com.cobweb.security.core.validate.code.ValidateCode;
 import com.cobweb.security.core.validate.code.ValidateCodeGenerator;
 import com.cobweb.security.core.validate.code.ValidateCodeProcessor;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +18,7 @@ import java.util.Map;
  * @author: XRom
  * @createdTime: 2018-07-30 15:54:21
  */
-public abstract class AbstractValidateCodeProcessor<C> implements ValidateCodeProcessor {
+public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
@@ -55,7 +56,8 @@ public abstract class AbstractValidateCodeProcessor<C> implements ValidateCodePr
      * @param validateCode 验证码
      */
     private void save(ServletWebRequest request, C validateCode) {
-        sessionStrategy.setAttribute(request, SESSION_KET_PREFIX+getProcessorType(request).toUpperCase(), validateCode);
+        ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+        sessionStrategy.setAttribute(request, SESSION_KET_PREFIX+getProcessorType(request).toUpperCase(), code);
     }
 
     /**
