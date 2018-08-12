@@ -11,7 +11,18 @@ spring:
           username: XRom.Zeng@outlook.com
           password: XRom19980126.
           basedir: E:\Projects\XRom\repository\config-server
+  rabbitmq:
+    host: zxr1998.com.cn
+    username: XRom
+    password: XRom45
+    virtual-host: /
+    publisher-confirms: true
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8120/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
