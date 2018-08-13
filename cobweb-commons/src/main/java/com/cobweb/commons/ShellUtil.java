@@ -2,9 +2,11 @@ package com.cobweb.commons;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
 /**
- * linux shell操作工具类
+ * linux shell 脚本操作工具类
+ *
+ * @author: XRom
+ * @createdTime: 2018-08-13 20:04:45
  */
 public class ShellUtil {
 
@@ -24,6 +26,11 @@ public class ShellUtil {
             sb.append(line).append("\n");
         }
         return sb.toString();
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        new ShellUtil().executeShellFile("/usr/local/temp/mkdir.sh");
     }
 
 }  
