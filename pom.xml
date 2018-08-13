@@ -13,6 +13,8 @@
         <module>registry-center</module>
         <module>config-center</module>
         <module>cobweb-admin</module>
+        <module>pay-center</module>
+        <module>cobweb-commons</module>
     </modules>
 
     <properties>
@@ -44,17 +46,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>xrom.zeng</groupId>
+                <artifactId>cobweb.commons</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

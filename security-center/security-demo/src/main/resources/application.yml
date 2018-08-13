@@ -19,7 +19,7 @@ spring:
     cache: false
     mode: LEGACYHTML5
 mybatis:
-  type-aliases-package: com.cobweb.security.demo.eneity
+  type-aliases-package: com.cobweb.security.demo.entity
   mapper-locations: classpath:mybatis/mapper/*.xml
   config-location: classpath:mybatis/config/mybatis-config.xml
 cobweb:
