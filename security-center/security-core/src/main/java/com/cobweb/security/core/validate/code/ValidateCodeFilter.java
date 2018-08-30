@@ -95,7 +95,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
      */
     private void addUrlToMap(String urlString, ValidateCodeType codeType) {
         if (StringUtils.isNotBlank(urlString)) {
-            String[] urls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrls(), ",");
+            String[] urls = StringUtils.splitByWholeSeparatorPreserveAllTokens(urlString, ",");
             if (urls != null && urls.length > 0) {
                 for (String url : urls) {
                     urlMap.put(url, codeType);
