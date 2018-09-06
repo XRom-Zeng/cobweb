@@ -15,6 +15,7 @@
         <module>cobweb-admin</module>
         <module>pay-center</module>
         <module>cobweb-commons</module>
+        <module>demo</module>
     </modules>
 
     <properties>

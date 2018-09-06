@@ -1,0 +1,13 @@
+server:
+  port: 666
+spring:
+  kafka:
+    bootstrap-servers: 118.24.53.232:9092
+    consumer:
+      group-id: xrom
+    template:
+      default-topic: test
+    listener:
+      concurrency: 3
+    producer:
+      batch-size: 1000

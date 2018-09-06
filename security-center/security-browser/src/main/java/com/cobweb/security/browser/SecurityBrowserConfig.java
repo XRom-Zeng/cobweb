@@ -3,19 +3,18 @@ package com.cobweb.security.browser;
 import com.cobweb.security.browser.authentication.BrowserAuthenticationFailureHandler;
 import com.cobweb.security.browser.authentication.BrowserAuthenticationSuccessHandler;
 import com.cobweb.security.browser.session.CobwebExpiredSessionStrategy;
-import com.cobweb.security.core.SmsCodeAuthenticationSecurityConfig;
-import com.cobweb.security.core.ValidateCodeSecurityConfig;
+import com.cobweb.security.core.validate.code.SmsCodeAuthenticationSecurityConfig;
+import com.cobweb.security.core.validate.code.ValidateCodeSecurityConfig;
 import com.cobweb.security.core.constant.SecurityConstants;
 import com.cobweb.security.core.properties.SecurityProperties;
 import com.cobweb.security.core.properties.SessionProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.social.security.SpringSocialConfigurer;
@@ -53,15 +52,15 @@ public class SecurityBrowserConfig extends WebSecurityConfigurerAdapter {
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
+    }
+
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override

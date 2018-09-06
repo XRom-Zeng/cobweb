@@ -1,4 +1,4 @@
-package com.cobweb.security.core;
+package com.cobweb.security.core.validate.code;
 
 import com.cobweb.security.core.authentication.mobile.SmsCodeAuthenticationFilter;
 import com.cobweb.security.core.authentication.mobile.SmsCodeAuthenticationProvider;

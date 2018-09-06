@@ -1,7 +1,6 @@
-package com.cobweb.security.core;
+package com.cobweb.security.core.validate.code;
 
 import com.cobweb.security.core.properties.SecurityProperties;
-import com.cobweb.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

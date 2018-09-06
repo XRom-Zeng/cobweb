@@ -1,6 +1,7 @@
 package com.cobweb.security.core.social.qq.api;
 
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.oauth2.TokenStrategy;
@@ -9,6 +10,7 @@ import org.springframework.social.oauth2.TokenStrategy;
  * @author: XRom
  * @createdTime: 2018-07-17 18:41:09
  */
+@Slf4j
 public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
 
     /* 获取openid请求地址 */
@@ -33,6 +35,7 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
     public QQUserInfo getUserInfo() {
         String url = String.format(URL_GET_USER_INFO, appId, openId);
         String response = getRestTemplate().getForObject(url, String.class);
+        log.info(response);
         QQUserInfo userInfo = new Gson().fromJson(response, QQUserInfo.class);
         userInfo.setOpenId(openId);
         return userInfo;
