@@ -1,5 +1,6 @@
 package com.cobweb.security.app.config;
 
+import com.cobweb.security.app.jwt.JwtTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,18 +40,18 @@ public class AppAuthorizationServerConfig extends AuthorizationServerConfigurerA
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     @Autowired(required = false)
-    private TokenEnhancer tokenEnhancer;
+    private JwtTokenEnhancer jwtTokenEnhancer;
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 .tokenStore(tokenStore);
-        if (jwtAccessTokenConverter != null && tokenEnhancer != null) {
+        if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
             TokenEnhancerChain chain = new TokenEnhancerChain();
             List<TokenEnhancer> enhancerList = new ArrayList<>();
             enhancerList.add(jwtAccessTokenConverter);
-            enhancerList.add(tokenEnhancer);
+            enhancerList.add(jwtTokenEnhancer);
             chain.setTokenEnhancers(enhancerList);
             endpoints
                     .tokenEnhancer(chain)
