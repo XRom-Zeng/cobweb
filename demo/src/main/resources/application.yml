@@ -3,11 +3,13 @@ server:
 spring:
   kafka:
     bootstrap-servers: 118.24.53.232:9092
+    producer:
+      batch-size: 1000
     consumer:
       group-id: xrom
+      auto-offset-reset: earliest
+      enable-auto-commit: true
     template:
       default-topic: test
     listener:
       concurrency: 3
-    producer:
-      batch-size: 1000
