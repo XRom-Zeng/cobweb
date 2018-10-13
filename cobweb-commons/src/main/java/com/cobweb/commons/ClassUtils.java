@@ -49,7 +49,7 @@ public class ClassUtils {
                         for (Field targetField : targetFields) {
                             targetField.setAccessible(true);
                             if (StringUtils.equals(metadataField.getName(), targetField.getName())) {
-                                if (metadataField.get(metadata) == null) {
+                                if (metadataField.get(metadata) == null || StringUtils.isBlank(metadataField.get(metadata).toString())) {
 
                                 } else if (metadataField.getType() == Date.class || targetField.getType() == Date.class) {
                                     dateTypeHander(metadataField, targetField, metadata, targetObject);
