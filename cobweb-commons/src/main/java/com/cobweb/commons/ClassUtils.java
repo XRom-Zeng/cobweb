@@ -20,13 +20,13 @@ public class ClassUtils {
     private static final SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
-     * 利用java反射, 将一个类中的属性赋值到另一个类中
+     * 利用java反射, 将一个类中的属性赋值到另一个类中(会生成新对象)
      *
-     * @param metadata    元对象
-     * @param targetClass 目标对象
-     * @param <T>
-     * @param <S>
-     * @return
+     * @param metadata    源对象引用
+     * @param targetClass 目标对象class
+     * @param <T>         源对象类型
+     * @param <S>         目标对象类型
+     * @return 赋值后的对象引用
      */
     public static <T, S> T swithClass(S metadata, Class<T> targetClass) {
         if (targetClass == null || metadata == null) {
@@ -34,7 +34,7 @@ public class ClassUtils {
         }
 
         try {
-            T targetObject = targetClass.newInstance();
+            T targetEntity = targetClass.newInstance();
             Class<?> metadataClass = metadata.getClass();
             do {
                 Field[] metadataFields = metadataClass.getDeclaredFields();
@@ -45,30 +45,80 @@ public class ClassUtils {
                     }
                     Class tc = targetClass;
                     do {
-                        Field[] targetFields = tc.getDeclaredFields();
-                        for (Field targetField : targetFields) {
-                            targetField.setAccessible(true);
-                            if (StringUtils.equals(metadataField.getName(), targetField.getName())) {
-                                if (metadataField.get(metadata) == null || StringUtils.isBlank(metadataField.get(metadata).toString())) {
-
-                                } else if (metadataField.getType() == Date.class || targetField.getType() == Date.class) {
-                                    dateTypeHander(metadataField, targetField, metadata, targetObject);
-                                } else if (metadataField.getType() != targetField.getType()) {
-                                    differentTypeHandler(metadataField, targetField, metadata, targetObject);
-                                } else {
-                                    targetField.set(targetObject, metadataField.get(metadata));
-                                }
-                            }
-                        }
+                        assignment(tc, metadataField, metadata, targetEntity);
                         tc = tc.getSuperclass();
                     } while (tc != Object.class);
                 }
                 metadataClass = metadataClass.getSuperclass();
             } while (metadataClass != Object.class);
-            return targetObject;
+            return targetEntity;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    /**
+     * 利用java反射, 将一个类中的属性赋值到另一个类中
+     *
+     * @param metadata     源对象引用
+     * @param targetEntity 目标对象引用
+     * @param <T>          源对象类型
+     * @param <S>          目标对象类型
+     */
+    public static <T, S> void swithClass(S metadata, T targetEntity) {
+        if (targetEntity == null || metadata == null) {
+            return;
+        }
+        try {
+            Class<?> metadataClass = metadata.getClass();
+            do {
+                Field[] metadataFields = metadataClass.getDeclaredFields();
+                for (Field metadataField : metadataFields) {
+                    metadataField.setAccessible(true);
+                    if (Modifier.isStatic(metadataField.getModifiers())) {
+                        continue;
+                    }
+                    Class tc = targetEntity.getClass();
+                    do {
+                        assignment(tc, metadataField, metadata, targetEntity);
+                        tc = tc.getSuperclass();
+                    } while (tc != Object.class);
+                }
+                metadataClass = metadataClass.getSuperclass();
+            } while (metadataClass != Object.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 赋值
+     *
+     * @param tc            目标对象class
+     * @param metadataField 源对象字段
+     * @param metadata      源对象引用
+     * @param targetEntity  目标对象引用
+     * @param <S>           源对象类型
+     * @param <T>           目标对象类型
+     * @throws IllegalAccessException
+     * @throws ParseException
+     */
+    private static <S, T> void assignment(Class tc, Field metadataField, S metadata, T targetEntity) throws IllegalAccessException, ParseException {
+        Field[] targetFields = tc.getDeclaredFields();
+        for (Field targetField : targetFields) {
+            targetField.setAccessible(true);
+            if (StringUtils.equals(metadataField.getName(), targetField.getName())) {
+                if (metadataField.get(metadata) == null || StringUtils.isBlank(metadataField.get(metadata).toString())) {
+
+                } else if (metadataField.getType() == Date.class || targetField.getType() == Date.class) {
+                    dateTypeHander(metadataField, targetField, metadata, targetEntity);
+                } else if (metadataField.getType() != targetField.getType()) {
+                    differentTypeHandler(metadataField, targetField, metadata, targetEntity);
+                } else {
+                    targetField.set(targetEntity, metadataField.get(metadata));
+                }
+            }
         }
     }
 
@@ -79,8 +129,8 @@ public class ClassUtils {
      * @param targetField   目标字段
      * @param metadata      元数据对象的引用
      * @param targetEntity  目标对象class字节码
-     * @param <T>
-     * @param <S>
+     * @param <T>           目标对象类型
+     * @param <S>           源对象类型
      * @throws IllegalAccessException
      * @throws ParseException
      */
@@ -109,8 +159,8 @@ public class ClassUtils {
      * @param targetField   目标字段
      * @param metadata      元数据对象应用
      * @param targetEntity  目标对象class字节码
-     * @param <T>
-     * @param <S>
+     * @param <T>           目标对象类型
+     * @param <S>           源对象类型
      * @throws IllegalAccessException
      */
     private static <T, S> void differentTypeHandler(Field metadataField, Field targetField, S metadata, T targetEntity) throws IllegalAccessException {
